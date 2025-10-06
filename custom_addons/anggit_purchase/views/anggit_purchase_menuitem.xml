@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <menuitem
+        id="parent_anggit_purchase_id"
+        name="Pembelian"
+        sequence="35"/>
+        <menuitem
+            id="child_anggit_purchase_id"
+            name="Pembelian"
+            parent="anggit_purchase.parent_anggit_purchase_id"
+            action="anggit_purchase.purchase_action_id"/>
+        <menuitem
+            id="child_anggit_category_id"
+            name="Kategori"
+            parent="anggit_purchase.parent_anggit_purchase_id"
+            action="anggit_purchase.category_action_id"/>
+        <menuitem
+            id="child_anggit_coba_id"
+            name="Coba"
+            parent="anggit_purchase.parent_anggit_purchase_id"
+            action="anggit_purchase.coba_action_id"/>
+            
+        <!-- ===== MENU UTAMA ===== -->
+        <menuitem id="menu_anggit_extra_purchase"
+                name="Menu"
+                parent="purchase.menu_purchase_root"
+                sequence="23"/>
+
+        <!-- ===== SUB-MENU 1 ===== -->
+        <menuitem id="menu_anggit_sub1"
+                name="SubMenu 1"
+                parent="menu_anggit_extra_purchase"
+                action="anggit_purchase.action_sub1"
+                sequence="10"/>
+
+        <!-- ===== SUB-MENU 2 ===== -->
+        <menuitem id="menu_anggit_sub2"
+                name="SubMenu 2"
+                parent="menu_anggit_extra_purchase"
+                action="anggit_purchase.action_sub2"
+                sequence="20"/>
+</odoo>

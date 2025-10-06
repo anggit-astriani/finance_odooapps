@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <record id="purchase_action_id" model="ir.actions.act_window">
+        <field name="name">Pembelian</field>
+        <field name="res_model">anggit.purchase</field>
+    </record>
+
+    <record id="pembelian_action_tree_view_id" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">tree</field>
+        <!-- untuk ref : panggil nama modul terlebih dahulu lalu panggil id dari tree view -->
+        <field name="view_id" ref="anggit_purchase.anggit_purchase_tree_view_id"/>
+        <field name="act_window_id" ref="anggit_purchase.purchase_action_id"/>
+    </record>
+
+    <record id="pembelian_action_kanban_view_id" model="ir.actions.act_window.view">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="anggit_purchase.anggit_purchase_kanban_view_id"/>
+        <field name="act_window_id" ref="anggit_purchase.purchase_action_id"/>
+    </record>
+
+    <record id="pembelian_action_form_view_id" model="ir.actions.act_window.view">
+        <field name="sequence" eval="3"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="anggit_purchase.anggit_purchase_form_view_id"/>
+        <field name="act_window_id" ref="anggit_purchase.purchase_action_id"/>
+    </record>
+
+    <record id="category_action_id" model="ir.actions.act_window">
+        <field name="name">Kategori</field>
+        <field name="res_model">anggit.category</field>
+    </record>
+
+    <record id="category_action_tree_view_id" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="anggit_purchase.anggit_category_tree_view_id"/>
+        <field name="act_window_id" ref="anggit_purchase.category_action_id"/>
+    </record>
+
+    <record id="coba_action_id" model="ir.actions.act_window">
+        <field name="name">Coba</field>
+        <field name="res_model">anggit.category</field>
+    </record>
+
+    <record id="action_sub1" model="ir.actions.act_window">
+        <field name="name">SubMenu 1</field>
+        <field name="res_model">purchase.order</field>
+    </record>
+
+    <record id="action_sub2" model="ir.actions.act_window">
+        <field name="name">SubMenu 2</field>
+        <field name="res_model">purchase.order</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_anggit_purchase,access_anggit_purchase,model_anggit_purchase,,1,1,1,1
+access_anggit_purchase_line,access_anggit_purchase_line,model_anggit_purchase_line,,1,1,1,1
+access_anggit_category,access_anggit_category,model_anggit_category,,1,1,1,1

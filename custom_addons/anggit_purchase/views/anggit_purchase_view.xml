@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <record id="anggit_purchase_tree_view_id" model="ir.ui.view">
+        <field name="name">anggit_purchase_tree_view_id</field>
+        <field name="model">anggit.purchase</field>
+        <field name="arch" type="xml">
+            <!-- panggil field-filed yang akan dipanggil di tree ini -->
+            <!-- field yang sudah dibuat di model anggit_purchase -->
+            <tree>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="anggit_category"/>
+                <field name="tanggal"/>
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="anggit_purchase_form_view_id" model="ir.ui.view">
+        <field name="name">anggit_purchase_form_view_id</field>
+        <field name="model">anggit.purchase</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button type="object" name="funct_approve" string="Approve" invisible="status != 'draft'" class="oe_highlight"/>
+                    <button type="object" name="funct_set_to_done" string="Set to Done" invisible="status != 'approve'" class="oe_highlight"/>
+                    <field name="status" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <field name="invoice" widget="label" readonly="1" style="font-size: 28px; margin-bottom:30px;"/>
+                    <group>
+                        <group>
+                            <field name="partner_id" readonly="status != 'draft'"/>
+                            <field name="name" readonly="status != 'draft'"/>
+                        </group>
+                        <group>
+                            <field name="anggit_category" widget="many2many_tags" required="status == 'draft'" readonly="status != 'draft'"/>
+                            <field name="tanggal" readonly="status != 'draft'"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Produk">
+                            <field name="anggit_purchase_line_ids" nolabel="1" options="{'reload_on_button':True}" readonly="status != 'draft'">
+                                <tree edit="true" editable="bottom" create="true" delete="true">
+                                    <field name="product_id"/>
+                                    <field name="description"/>
+                                    <field name="quantity"/>
+                                    <field name="uom_id"/>
+                                    <field name="price"/>
+                                    <field name="subtotal"/>
+                                </tree>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right">
+                                <field name="total" class="oe_subtotal_footer_separator"/>
+                            </group>
+                            <group>
+                                <field name="vendor_bill_id" readonly="1"/>
+                                <!-- <field name="journal_entry_id" readonly="1"/> -->
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="anggit_purchase_kanban_view_id" model="ir.ui.view">
+        <field name="name">anggit_purchase_kanban_view_id</field>
+        <field name="model">anggit.purchase</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="status" class="o_kanban_mobile">
+                <field name="name"/>
+                <field name="tanggal"/>
+                <field name="status"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="o_kanban_record_top mb16">
+                                <strong>
+                                    <span><t t-esc="record.name.value"/></span>
+                                </strong>
+                            </div>
+                            <div class="o_kanban_record_bottom">
+                                <div class="oe_kanban_bottom_left">
+                                    <span><t t-esc="record.tanggal.value"/></span>
+                                </div>
+                                <div class="oe_kanban_bottom_right">
+                                    <span><t t-esc="record.status.value"/></span>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="anggit_category_tree_view_id" model="ir.ui.view">
+        <field name="name">anggit_category_tree_view_id</field>
+        <field name="model">anggit.category</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="inherit_product_template" model="ir.ui.view">
+        <field name="name">inherit_product_template</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='barcode']" position="after">
+                <field name="product_description"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Edit kanban yang ada pada modul accounting customer -> invoice -->
+    <record id="view_account_move_kanban_inherit_payment_state" model="ir.ui.view">
+        <field name="name">account.move.kanban.inherit.payment.state</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_move_kanban"/>
+        <field name="arch" type="xml">
+
+        <!-- Tambahkan default group by -->
+        <xpath expr="//kanban" position="attributes">
+            <attribute name="default_group_by">payment_state</attribute>
+        </xpath>
+
+        <!-- Sediakan field agar tersedia di record -->
+        <xpath expr="//field[@name='state']" position="after">
+            <field name="payment_state"/>
+        </xpath>
+
+        <!-- Tambahkan badge Payment State ke dalam kartu -->
+        <xpath expr="//t[@t-name='kanban-box']/div/div[@class='row mb4']" position="inside">
+            <div class="col-12">
+            <span class="badge">
+                <t t-esc="record.payment_state.value"/>
+            </span>
+            </div>
+        </xpath>
+
+        </field>
+    </record>
+
+    <!-- Menambahkan field baru di modul purchase -->
+    <record id="form_view_purchase_order_inherit" model="ir.ui.view">
+        <field name="name">form_view_purchase_order_inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='currency_id']" position="after">
+                <field name="internal_notes"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Edit tree view yang ada pada modul purchase -->
+    <record id="view_purchase_order_tree_inherit" model="ir.ui.view">
+        <field name="name">view_purchase_order_tree_inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                <field name="internal_notes" string="Internal Notes"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
